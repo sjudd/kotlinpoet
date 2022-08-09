@@ -674,6 +674,37 @@ class FunSpecTest {
     )
   }
 
+  @Test fun setterWithPublicModifier() {
+    val funSpec = FunSpec.setterBuilder()
+      .addParameter("value", String::class.asClassName())
+      .addStatement("this.value = this.value")
+      .addModifiers(KModifier.PUBLIC)
+      .build()
+
+    assertThat(funSpec.toString()).isEqualTo(
+      """
+      |public set(`value`) {
+      |  this.value = this.value
+      |}
+      |
+      """.trimMargin(),
+    )
+  }
+
+  @Test fun getterWithPublicModifier() {
+    val funSpec = FunSpec.getterBuilder()
+      .addStatement("return value")
+      .addModifiers(KModifier.PUBLIC)
+      .build()
+
+    assertThat(funSpec.toString()).isEqualTo(
+      """
+      |public get() = value
+      |
+      """.trimMargin(),
+    )
+  }
+
   @Test fun thisConstructorDelegate() {
     val funSpec = FunSpec.constructorBuilder()
       .addParameter("list", List::class.parameterizedBy(Int::class))
